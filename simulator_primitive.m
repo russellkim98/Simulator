@@ -1,11 +1,15 @@
 % The main file for simulating other 
 
+data = csvread('output.csv',1,0);   % DH: this reads in all data from the csv (header is not read in)
+% DH: output.csv is created by using 
 
 %Read in the ad number, the csv file
 prompt = 'Enter the ad number.'; 
-ad_Number = input(prompt); 
+ad_Number = input(prompt);   
 
-ad_group_ids = csvread('param.csv',1,1,[1,1,71000,1]); 
+
+
+ad_group_ids = csvread('output.csv',1,1,[1,1,71000,1]); 
 
 data = csvread('param.csv',1, 3); 
 
