@@ -8,7 +8,7 @@ data = csvread('ParsedParam.csv',1,0);   % DH: this reads in all data from the c
 %Read in the ad number, the csv file
 prompt = 'Enter the ad number.'; 
 % ad_Number = input(prompt);   % commented out by DH: for debugging ease
-as_Number = 14728045224;       % for debugging ease
+ad_Number = 14728045224;       % for debugging ease
 
 %Get the height of the array so that we can iterate through them
 column_No = size(data,1); 
