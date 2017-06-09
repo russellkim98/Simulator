@@ -1,8 +1,7 @@
 % The main file for simulating aspects of an auction bid based on previous
-% Read in labels 
- labels = csvread('ParsedParam.csv',0,0,
-% Read in data
-data = csvread('ParsedParam.csv',1,0);   % DH: this reads in all data from the csv (header is not read in)
+% data
+
+data = csvread('output.csv',1,0);   % DH: this reads in all data from the csv (header is not read in)
 % DH: output.csv is created by using 
 
 %Read in the ad number, the csv file
@@ -38,13 +37,10 @@ avg_value_clicks = value_of_clicks/number_of_data_Points;
 
 
 % Simulate the number of auctions 
-sim_Auctions = simAuctions(avg_num_auctions)
+print(simAuctions(avg_num_auctions); 
 % Simulate the number of clicks
-sim_Clicks = simClicks(avg_num_clicks,avg_num_auctions,avg_cpc,number_of_data_Points)
 % Simulate the total cost
-sim_total_Cost = totalCost(avg_num_clicks,avg_cpc)
 % Simulate the total revenue 
-sim_total_Revenue = totalRevenue(avg_value_clicks,avg_num_clicks)
 
-
-
+        
+        
