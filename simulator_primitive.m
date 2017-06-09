@@ -22,7 +22,7 @@ number_of_clicks = 0;
 value_of_clicks = 0; 
 
 for x = 1:column_No
-    if data(x,1) == ad_Number
+    if data(x,2) == ad_Number
         number_of_data_Points = number_of_data_Points + 1;
         number_of_auctions = number_of_auctions + data(x,5);
         cost_per_click = cost_per_click + data(x, 17);
