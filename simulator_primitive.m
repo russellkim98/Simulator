@@ -1,13 +1,14 @@
 % The main file for simulating aspects of an auction bid based on previous
 % Read in labels 
- labels = csvread('ParsedParam.csv',0,0,
+% labels = csvread('ParsedParam.csv',0,0,    % DH: commented out -- not working as of now 
 % Read in data
 data = csvread('ParsedParam.csv',1,0);   % DH: this reads in all data from the csv (header is not read in)
 % DH: output.csv is created by using 
 
 %Read in the ad number, the csv file
 prompt = 'Enter the ad number.'; 
-ad_Number = input(prompt);   
+% ad_Number = input(prompt);   % commented out by DH: for debugging ease
+as_Number = 14728045224;       % for debugging ease
 
 %Get the height of the array so that we can iterate through them
 column_No = size(data,1); 
