@@ -29,32 +29,22 @@ hour = hour';
 auctions = auctions';
 clicks = clicks';
 
-% Create the vectors for entry into regression 
+
+
+
 x = [year month day day_of_week hour];
 y = [clicks auctions]; 
 
-% If # of clicks > # of auctions, edit values so that 
-% # of clicks = # of auctions
 for a = 1:column_No 
     if all(y(a,1) > y(a,2))
         y(a,1) = y(a,2);
     end 
 end 
-% Perform logistical regression and find predicted values 
-logitCoef = glmfit(x,[y],'binomial');
+logitCoef = glmfit(x,[y],'binomial'); 
+pWC = glmval(logitCoef, x, 'logit'); 
 
-% In here, define a new vector that is the "test" variable
-% so we can control what dates, bid price, etc 
-%
-%
-%
-%
-%
-testingData = [15 3 30 0 13]; 
-pWC = glmval(logitCoef, testingData, 'logit'); 
-
-
-simulated_num_clicks = binornd(sim_Auctions,pWC); 
+ 
+simulated_num_clicks = mean(binornd(sim_Auctions,pWC)); 
 
 % STILL IN DEVELOPMENT 
 % tester = [year1 month1 day1 day_of_week1 hour1 600000];
