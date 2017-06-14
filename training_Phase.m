@@ -7,7 +7,7 @@ year = [];
 month = []; 
 day = []; 
 day_of_week = []; 
-hour = []; 
+hour = [];  
 auctions = []; 
 clicks = []; 
  

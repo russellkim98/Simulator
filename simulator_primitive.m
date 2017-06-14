@@ -50,7 +50,7 @@ for x = 1:(column_No)
 end  
 
 % Calculate the averages of the values 
-avg_num_auctions = number_of_auctions/number_of_data_Points; 
+avg_num_auctions = number_of_auctions/number_of_data_Points;  
 avg_cpc = cost_per_click/number_of_data_Points;
 avg_num_clicks = number_of_clicks/number_of_data_Points; 
 avg_value_clicks = value_of_clicks/number_of_data_Points; 

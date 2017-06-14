@@ -9,7 +9,7 @@ hour = [];
 auctions = []; 
 clicks = []; 
  
-
+ 
 for x = 1:column_No
     year = [year data(x,3)];
     month = [month data(x,4)]; 
