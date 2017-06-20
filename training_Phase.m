@@ -3,23 +3,23 @@ function[Mdl1] = training_Phase(data, column_No)
 % THIS FILE NOT IN USE 
 
 % Gather all data into a 2D array 
-year = []; 
-month = []; 
-day = []; 
-day_of_week = []; 
-hour = [];  
-auctions = []; 
-clicks = []; 
+year = zeros(column_No); 
+month = zeros(column_No); 
+day = zeros(column_No); 
+day_of_week = zeros(column_No);  
+hour = zeros(column_No);  
+auctions = zeros(column_No);  
+clicks = zeros(column_No);  
  
 
 for x = 1:column_No
-    year = [year data(x,3)];
-    month = [month data(x,4)]; 
-    day = [day data(x,5)]; 
-    day_of_week = [day_of_week data(x,6)]; 
-    hour = [hour data(x,7)]; 
-    auctions = [auctions data(x,8)]; 
-    clicks = [clicks data(x,10)]; 
+    year(x) = data(x,3);
+    month(x) = data(x,4); 
+    day(x) = data(x,5); 
+    day_of_week(x) = data(x,6); 
+    hour(x) = data(x,7); 
+    auctions(x) = data(x,8); 
+    clicks(x) = data(x,10); 
 
 end 
 

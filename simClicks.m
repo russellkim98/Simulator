@@ -1,23 +1,23 @@
-function[simulated_num_clicks] = simClicks(data,number_of_Auctions,column_No, year1, month1, day1, day_of_week1, hour1, sim_Auctions) 
+function[simulated_num_clicks] = simClicks(data,column_No, test_Year, test_month, test_day, test_day_of_week, test_hour, sim_Auctions) 
 
 % Gather all data into a 2D array 
-year = []; 
-month = []; 
-day = []; 
-day_of_week = []; 
-hour = []; 
-auctions = []; 
-clicks = []; 
+year = zeros([1 column_No]);  
+month = zeros([1 column_No]); 
+day = zeros([1 column_No]); 
+day_of_week = zeros([1 column_No]);  
+hour = zeros([1 column_No]); 
+auctions = zeros([1 column_No]); 
+clicks = zeros([1 column_No]);  
  
  
 for x = 1:column_No
-    year = [year data(x,3)];
-    month = [month data(x,4)]; 
-    day = [day data(x,5)]; 
-    day_of_week = [day_of_week data(x,6)]; 
-    hour = [hour data(x,7)]; 
-    auctions = [auctions data(x,8)]; 
-    clicks = [clicks data(x,10)]; 
+    year(x) = data(x,3);
+    month(x) = data(x,4); 
+    day(x) = data(x,5); 
+    day_of_week(x) = data(x,6); 
+    hour(x) = data(x,7); 
+    auctions(x) = data(x,8); 
+    clicks(x) = data(x,10); 
 
 end 
 % Transpose to make them column vectors 
@@ -30,7 +30,7 @@ auctions = auctions';
 clicks = clicks';
 
 % Create the vectors for entry into regression 
-x = [year month day day_of_week hour];
+x = [year month day day_of_week hour auctions];
 y = [clicks auctions]; 
 
 % If # of clicks > # of auctions, edit values so that 
@@ -41,17 +41,13 @@ for a = 1:column_No
     end 
 end 
 % Perform logistical regression and find predicted values 
-logitCoef = glmfit(x,[y],'binomial');
+logitCoefClicks = glmfit(x,[y],'binomial')
 
 % In here, define a new vector that is the "test" variable
 % so we can control what dates, bid price, etc 
-%
-%
-%
-%
-%
-testingData = [15 3 30 0 13]; 
-pWC = glmval(logitCoef, testingData, 'logit'); 
+
+testingData = [test_Year test_month test_day test_day_of_week test_hour sim_Auctions]; 
+pWC = glmval(logitCoefClicks, testingData, 'logit'); 
 
 
 simulated_num_clicks = binornd(sim_Auctions,pWC); 

@@ -1,13 +1,13 @@
-function[simulated_num_clicks] = simClicks(data,column_No, test_Year, test_month, test_day, test_day_of_week, test_hour, sim_Auctions) 
+function[simulated_Impressions] = simImpressions(data,column_No, test_Year, test_month, test_day, test_day_of_week, test_hour, sim_Auctions)
 
 % Gather all data into a 2D array 
-year = zeros(column_No);  
-month = zeros(column_No); 
-day = zeros(column_No); 
-day_of_week = zeros(column_No);  
-hour = zeros(column_No); 
-auctions = zeros(column_No); 
-clicks = zeros(column_No);  
+year = zeros([1 column_No]); 
+month = zeros([1 column_No]); 
+day = zeros([1 column_No]);  
+day_of_week = zeros([1 column_No]); 
+hour = zeros([1 column_No]); 
+auctions = zeros([1 column_No]); 
+impressions = zeros([1 column_No]); 
  
  
 for x = 1:column_No
@@ -17,7 +17,7 @@ for x = 1:column_No
     day_of_week(x) = data(x,6); 
     hour(x) = data(x,7); 
     auctions(x) = data(x,8); 
-    clicks(x) = data(x,9); 
+    impressions(x) = data(x,9); 
 
 end 
 % Transpose to make them column vectors 
@@ -27,33 +27,27 @@ day = day';
 day_of_week = day_of_week'; 
 hour = hour';
 auctions = auctions';
-clicks = clicks';
+impressions = impressions';
 
 % Create the vectors for entry into regression 
 x = [year month day day_of_week hour auctions];
-y = [clicks auctions]; 
+y = [impressions auctions]; 
 
-% If # of clicks > # of auctions, edit values so that 
-% # of clicks = # of auctions
+% If # of impressions > # of auctions, edit values so that 
+% # of impressions = # of auctions
 for a = 1:column_No 
     if all(y(a,1) > y(a,2))
         y(a,1) = y(a,2);
     end 
 end 
 % Perform logistical regression and find predicted values 
-logitCoef = glmfit(x,[y],'binomial');
+logitCoefImp = glmfit(x,[y],'binomial')
 
 % In here, define a new vector that is the "test" variable
 % so we can control what dates, bid price, etc 
 
 testingData = [test_Year test_month test_day test_day_of_week test_hour sim_Auctions]; 
-pWC = glmval(logitCoef, testingData, 'logit'); 
+pWC = glmval(logitCoefImp, testingData, 'logit'); 
 
 
-simulated_num_clicks = binornd(sim_Auctions,pWC); 
-
-% STILL IN DEVELOPMENT 
-% tester = [year1 month1 day1 day_of_week1 hour1 600000];
-% model = training_Phase(data,column_No); 
-% 
-% simulated_num_clicks = predict(model,tester); 
+simulated_Impressions = binornd(sim_Auctions,pWC); 

@@ -17,11 +17,11 @@ data = csvread('ParsedParam.csv',1,0);   % DH: this reads in all data from the c
 % Use this for debugging purposes 
 campaign_id = 188942304; 
 ad_group_id = 14728045224; 
-year = 16; 
-month = 2; 
-day = 5; 
-day_of_week = 4; 
-hour = 10; 
+year = 15; 
+month = 11; 
+day = 14; 
+day_of_week = 5; 
+hour = 18; 
 
 %Get the height of the array so that we can iterate through them
 column_No = size(data,1); 
@@ -72,20 +72,16 @@ sim_total_Cost = totalCost(avg_num_clicks,avg_cpc)
 % Simulate the total revenue 
 sim_total_Revenue = totalRevenue(avg_value_clicks,avg_num_clicks)
 
-
-% Export it to a csv file 
-labels = {'campaign_id'	'ad_group_id' 'year' 'month' 'day-of-week' 'hour_of_day'	'auctions' 'impressions' 'clicks' 'conversions' 'total_Cost' 'total_Revenue'}; 
-[rows,cols]=size(labels);
-fid=fopen('sim_Output.csv','wt');
+labels = ["campaign_id"	"ad_group_id" "year" "month" "date"	"day-of-week" "hour_of_day"	"auctions" "impressions" "clicks" "conversions" "total_Cost" "total_Revenue"];
+[rows,cols]=size(labels)
 for i=1:rows
-      fprintf(fid,'%s,',labels{i,1:end-1});
-      fprintf(fid,'%s\n',labels{i,end});
+      fprintf(fid,'%s,',x{i,1:end-1})
+      fprintf(fid,'%s\n',x{i,end})
 end
-
-
-
 fclose(fid);
+sim_Data =  [3 5 5 6 6 6 6 54 7 98 9 5 2]; 
+output = [labels; sim_Data]; 
 
-sim_Data = [campaign_id ad_group_id   year   month	 day_of_week   hour	 sim_Auctions   sim_Impressions   sim_Clicks   sim_Conversions   sim_total_Cost   sim_total_Revenue]; 
 
-csvwrite('sim_Output.csv',sim_Data,1,0); 
+
+csvwrite('simData.csv',output); 
