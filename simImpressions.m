@@ -1,5 +1,13 @@
-function[simulated_Impressions] = simImpressions(data,column_No, test_Year, test_month, test_day, test_day_of_week, test_hour, sim_Auctions)
+function[simulated_Impressions] = simImpressions(sim_Auctions)
 
+global data; 
+global column_No; 
+global test_year; 
+global test_month;  
+global test_day; 
+global test_day_of_week; 
+global test_hour; 
+% global bid; 
 % Gather all data into a 2D array 
 year = zeros([1 column_No]); 
 month = zeros([1 column_No]); 
@@ -41,12 +49,12 @@ for a = 1:column_No
     end 
 end 
 % Perform logistical regression and find predicted values 
-logitCoefImp = glmfit(x,[y],'binomial')
+logitCoefImp = glmfit(x,[y],'binomial');
 
 % In here, define a new vector that is the "test" variable
 % so we can control what dates, bid price, etc 
 
-testingData = [test_Year test_month test_day test_day_of_week test_hour sim_Auctions]; 
+testingData = [test_year test_month test_day test_day_of_week test_hour sim_Auctions]; 
 pWC = glmval(logitCoefImp, testingData, 'logit'); 
 
 

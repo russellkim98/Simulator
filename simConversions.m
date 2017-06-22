@@ -1,4 +1,13 @@
-function[simulated_Conversions] = simConversions(data,column_No, test_Year, test_month, test_day, test_day_of_week, test_hour, sim_Clicks)
+function[simulated_Conversions] = simConversions(sim_Clicks)
+
+global data; 
+global column_No; 
+global test_year; 
+global test_month;  
+global test_day; 
+global test_day_of_week; 
+global test_hour; 
+% global bid; 
 
 % Gather all data into a 2D array 
 year = zeros([1 column_No]); 
@@ -41,12 +50,12 @@ for a = 1:column_No
     end 
 end 
 % Perform logistical regression and find predicted values 
-logitCoefConv = glmfit(x,[y],'binomial')
+logitCoefConv = glmfit(x,[y],'binomial');
 
 % In here, define a new vector that is the "test" variable
 % so we can control what dates, bid price, etc 
 
-testingData = [test_Year test_month test_day test_day_of_week test_hour sim_Clicks]; 
+testingData = [test_year test_month test_day test_day_of_week test_hour sim_Clicks]; 
 pWC = glmval(logitCoefConv, testingData, 'logit'); 
 
 
