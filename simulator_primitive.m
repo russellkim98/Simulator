@@ -30,7 +30,8 @@ test_day = 5;
 global test_day_of_week; 
 test_day_of_week = 4; 
 global test_hour; 
-test_hour = 10; 
+test_hour = 10;
+global bid; 
 % global bid; 
 % bid = to_be_determined
 
