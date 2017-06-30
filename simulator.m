@@ -33,35 +33,61 @@ test_day_of_week = 4;
 global test_hour; 
 test_hour = 10;
 
+% Initialize the policy 
 [X,theta,p] = initialize_KG();
 
-
-
+% Clean up data 
 auctions = data_preprocessor(); 
 profit = 0; 
 
-parpool
+ % Start parallel processing
+%parpool
 
+% Loop for every hour in the week 
+% Simulate number of auctions in that hour, find out how many clicks there 
+% are, then update the learning policy with the number of clicks/auctions
+% based on the bid price
 for i = 1:168
+    % Get bid from policy 
     [X,theta,p,bid] = KG_hr(X,theta,p); 
     sampleAuctions = simAuctions(auctions(i)); 
     totalClicks = 0; 
-    theta1 = theta(1,1);
-    theta2 = theta(2,1);
-    clicks = Clicks(theta1,theta2,bid);
+    
+    theta1 = theta(1,5);
+    theta2 = theta(2,5); 
     for j = 1:sampleAuctions 
+        clicks = Clicks(theta0,theta1,bid); 
         totalClicks = totalClicks + clicks;
     end 
-    [X,theta,p] = learner_KG_hr(X,theta,p,bid,sampleAuctions,clicks);
-    
+    % Update learning policy 
+    [X,theta,p] = learner_KG_hr(X,theta,p,bid,sampleAuctions,totalClicks);
+    disp('test successful')
+    for col=1:length(theta)
+        bids = theta(:,col); 
+        y = 1./(1 + exp(-bids(1) - bids(2) * x));
+        if bids(1) == theta1 && bids(2) == theta2
+            plot(x,y,'-.r*')
+            drawnow
+            pause(0.5)
+        end
+        if p(col) > 0.1 
+            plot(x,y,'LineWidth',30*p(col)); 
+            drawnow
+            pause(0.5);
+        end 
+        
+        hold on
+    end
+    p
     profit = profit + (20 - bid);
 end 
-p = gcp; 
-delete(p)
+% Stop parallel processing 
+profile = gcp; 
+delete(profile)
          
-theta
-        
-        
+p
+clicks 
+profit
         
         
 
