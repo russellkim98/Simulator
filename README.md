@@ -1,25 +1,28 @@
 # README #
 
-Have a file called "ParsedParam.csv" with data and use it to run the scripts
+Have a file called "ParsedParam.csv" with data with correct columns like this: 
+![Screen Shot 2017-06-30 at 10.04.39 AM.png](https://bitbucket.org/repo/4p8RaKL/images/3586646550-Screen%20Shot%202017-06-30%20at%2010.04.39%20AM.png)
 
 ## What is this repository for? ##
 
 * Code for running a simulation of ad clicks on Google Ads 
-* Version 1.0
+* Version 2.0
 
 
 ## How do I get set up? ##
 
 ### Summary of set up ###
-* Download files and set directory path to point to simulator.m
+* Clone repository
+* Clone the "policy" repository as well(Optional if developing your own policy) 
+* Edit the appropriate lines of simulator.m so that they refer to whatever policy you are testing
 ### Configuration ###
-* N/a
+* Make sure that all subfolders are in the working directory 
 ### Dependencies ###
-* Make sure your computer is capable of running several parallel processes, otherwise the code will take hours to run. 
+* Make sure your computer is capable of running several parallel processes, otherwise the code will take hours to run if doing more than one run
 ### Database configuration ###
 * N/a
 ### How to run tests ###
-* Run simulator.m and follow online prompts. 
+* Run simulator.m
 ### Deployment instructions ###
 * None, except for clicking the "run" button with the appropriate "param.csv" file. 
 
