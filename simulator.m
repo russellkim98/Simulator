@@ -34,29 +34,32 @@ global test_hour;
 test_hour = 10;
 
 [X,theta,p] = initialize_KG();
-[X,theta,p,bid] = KG(X,theta,p); 
+
 
 
 auctions = data_preprocessor(); 
 profit = 0; 
-for i = 1:168 
+
+parpool
+
+for i = 1:168
+    [X,theta,p,bid] = KG_hr(X,theta,p); 
     sampleAuctions = simAuctions(auctions(i)); 
     totalClicks = 0; 
+    theta1 = theta(1,1);
+    theta2 = theta(2,1);
+    clicks = Clicks(theta1,theta2,bid);
     for j = 1:sampleAuctions 
-        totalClicks = totalClicks + Clicks(theta(1),theta(2),bid);
+        totalClicks = totalClicks + clicks;
     end 
-    [X,theta,p] = learner_KG_hr(X,theta,p,bid,sampleAuctions,totalClicks);
-    theta
+    [X,theta,p] = learner_KG_hr(X,theta,p,bid,sampleAuctions,clicks);
+    
     profit = profit + (20 - bid);
 end 
-% 
-% 
-% X
-% theta
-% p
-% profit 
-
+p = gcp; 
+delete(p)
          
+theta
         
         
         

@@ -4,8 +4,8 @@ global data;
 global ad_group_id; 
 global column_No; 
 
-auctions = zeros([column_No 1]); 
-for x = 98:(column_No)
+auctions = zeros([168 1]); 
+for x = 98:168:(column_No)
     auctions(x) = data(x,8); 
 end 
 
