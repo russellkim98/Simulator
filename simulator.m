@@ -6,7 +6,8 @@ counter = 1;
 % Read in data
 global data;  
 data = csvread('ParsedParam.csv',1,0);   % DH: this reads in all data from the csv (header is not read in)
-
+global column_No; 
+column_No = 70176; 
 
 % % Read in the ad number, the csv file
 % campaign_Number = input('Enter the campaign number.'); 
@@ -42,44 +43,43 @@ profit = 0;
 
  % Start parallel processing
 %parpool
-
+x = [0:0.1:10];
 % Loop for every hour in the week 
 % Simulate number of auctions in that hour, find out how many clicks there 
 % are, then update the learning policy with the number of clicks/auctions
 % based on the bid price
+theta1 = theta(1,4);
+theta2 = theta(2,4);
+yTruth = 1./(1 + exp(-theta1 - theta2 * x));
+plot(x,yTruth,'-.r*')
+legend('yTruth'); 
+hold on
 for i = 1:168
     % Get bid from policy 
     [X,theta,p,bid] = KG_hr(X,theta,p); 
     sampleAuctions = simAuctions(auctions(i)); 
     totalClicks = 0; 
-    
-    theta1 = theta(1,5);
-    theta2 = theta(2,5); 
+ 
     for j = 1:sampleAuctions 
-        clicks = Clicks(theta0,theta1,bid); 
+        clicks = Clicks(theta1,theta2,bid); 
         totalClicks = totalClicks + clicks;
     end 
-    % Update learning policy 
-    [X,theta,p] = learner_KG_hr(X,theta,p,bid,sampleAuctions,totalClicks);
-    disp('test successful')
+    % For all the different sets of theta values
+     
     for col=1:length(theta)
+ 
         bids = theta(:,col); 
         y = 1./(1 + exp(-bids(1) - bids(2) * x));
-        if bids(1) == theta1 && bids(2) == theta2
-            plot(x,y,'-.r*')
-            drawnow
-            pause(0.5)
-        end
-        if p(col) > 0.1 
-            plot(x,y,'LineWidth',30*p(col)); 
-            drawnow
-            pause(0.5);
-        end 
-        
+        plot(x,y,'LineWidth',10*p(col)); 
+        drawnow
+        pause(0.5);
         hold on
+        
     end
-    p
+    clf
     profit = profit + (20 - bid);
+    % Update learning policy
+    [X,theta,p] = learner_KG_hr(X,theta,p,bid,sampleAuctions,totalClicks);
 end 
 % Stop parallel processing 
 profile = gcp; 

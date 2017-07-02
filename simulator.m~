@@ -6,7 +6,8 @@ counter = 1;
 % Read in data
 global data;  
 data = csvread('ParsedParam.csv',1,0);   % DH: this reads in all data from the csv (header is not read in)
-
+global column_No; 
+c
 
 % % Read in the ad number, the csv file
 % campaign_Number = input('Enter the campaign number.'); 
@@ -41,8 +42,8 @@ auctions = data_preprocessor();
 profit = 0; 
 
  % Start parallel processing
-parpool
-
+%parpool
+x = [0:0.1:10];
 % Loop for every hour in the week 
 % Simulate number of auctions in that hour, find out how many clicks there 
 % are, then update the learning policy with the number of clicks/auctions
@@ -59,25 +60,26 @@ for i = 1:168
         clicks = Clicks(theta0,theta1,bid); 
         totalClicks = totalClicks + clicks;
     end 
-    % Update learning policy 
-    [X,theta,p] = learner_KG_hr(X,theta,p,bid,sampleAuctions,totalClicks);
-    disp('test successful')
+    % For all the different sets of theta values
+     
     for col=1:length(theta)
+        yTruth = 1./(1 + exp(-theta1 - theta2 * x));
         bids = theta(:,col); 
         y = 1./(1 + exp(-bids(1) - bids(2) * x));
-        if bids1 == theta1 && bids2 == theta2
-            plot(x,y,'-.r*')
-            drawN
-        end
-        elseif p(col) > 0.1 
-            plot(x,y,'LineWidth',exp(3*p(col))); 
+        if p(col) > 0.1 
+            plot(x,y,'LineWidth',30*p(col)); 
             drawnow
             pause(0.5);
         end 
         
         hold on
     end
+    p
     profit = profit + (20 - bid);
+    % Update learning policy
+    sampleAuctions
+    totalClicks
+    [X,theta,p] = learner_KG_hr(X,theta,p,bid,sampleAuctions,totalClicks);
 end 
 % Stop parallel processing 
 profile = gcp; 

@@ -6,8 +6,7 @@ global column_No;
 
 auctions = zeros([168 1]); 
 for x = 1:168
-    everyNthRow = data(97 + x:168:end,:);
-    auctions(x) = mean(everyNthRow(:,8)); 
+    everyNthrow = data(97 + x:168:end,:)
 end 
 
 
