@@ -43,22 +43,23 @@ profit = 0;
 
  % Start parallel processing
 %parpool
-x = [0:0.1:10];
+x = 0:0.1:10;
 % Loop for every hour in the week 
 % Simulate number of auctions in that hour, find out how many clicks there 
 % are, then update the learning policy with the number of clicks/auctions
 % based on the bid price
-theta1 = theta(1,4);
-theta2 = theta(2,4);
-yTruth = 1./(1 + exp(-theta1 - theta2 * x));
-plot(x,yTruth,'-.r*')
-legend('yTruth'); 
-hold on
+theta1 = theta(1,3);
+theta2 = theta(2,3);
+totalClicks = 0; 
+
+p_change_truth = csvread("parameters.csv", 0, 1, [0,1,0,1]); 
+
+
 for i = 1:168
     % Get bid from policy 
-    [X,theta,p,bid] = KG_hr(X,theta,p); 
+    [X,theta,p,bid] = KG_hr(X,theta,p, 0); 
     sampleAuctions = simAuctions(auctions(i)); 
-    totalClicks = 0; 
+    
  
     for j = 1:sampleAuctions 
         clicks = Clicks(theta1,theta2,bid); 
@@ -66,27 +67,43 @@ for i = 1:168
     end 
     % For all the different sets of theta values
      
+
+    hold on 
     for col=1:length(theta)
- 
-        bids = theta(:,col); 
-        y = 1./(1 + exp(-bids(1) - bids(2) * x));
-        plot(x,y,'LineWidth',10*p(col)); 
-        drawnow
-        pause(0.5);
-        hold on
+        yTruth = 1./(1 + exp(-theta1 - theta2 * x));
+        plot(x,yTruth,'-.r*')
+        if p(col) >= 0.1 && col ~= 3
+
+            bids = theta(:,col); 
+            y = 1./(1 + exp(-bids(1) - bids(2) * x));
+            plot(x,y,'LineWidth',10*p(col));
+            plot(bid, 0);
+            drawnow
+            if i ~= 168
+                hold on
+            end 
+        end 
         
     end
     clf
-    profit = profit + (20 - bid);
+    profit = 20*clicks - clicks*bid;
     % Update learning policy
     [X,theta,p] = learner_KG_hr(X,theta,p,bid,sampleAuctions,totalClicks);
+    % Randomize truth so that it's dynamic
+    if rand >= p_change_truth
+        
+        newCol = round(rand(1)*10); 
+        theta1 = theta(1, newCol); 
+        theta2 = theta(2, newCol); 
+    end 
+        
 end 
 % Stop parallel processing 
-profile = gcp; 
-delete(profile)
+%profile = gcp; 
+%delete(profile)
          
 p
-clicks 
+totalClicks 
 profit
         
         
