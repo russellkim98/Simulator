@@ -42,10 +42,10 @@ global test_hour;
 test_hour = 10;
 
 % Initialize the policy 
-[X1,theta1,p1] = initialize_KG1();
-[X2,theta2,p2] = initialize_KG2();
-[X3,theta3,p3] = initialize_KG3();
-testrs = init(0.5); 
+[X1,theta1,p1] = initialize_KG();
+[X2,theta2,p2] = initialize_KG();
+[X3,theta3,p3] = initialize_KG();
+% testrs = init(0.5); 
 
 % Clean up data 
 auctions = data_preprocessor(); 
@@ -61,10 +61,6 @@ x = 0:0.1:10;
 % based on the bid price
 truth_theta1_1 = -7;
 truth_theta1_2 = 2;
-truth_theta2_1 = -7;
-truth_theta2_2 = 2;
-truth_theta3_1 = -7;
-truth_theta3_2 = 2;
 
 totalClicks1 = 0; 
 totalClicks2 = 0; 
@@ -75,27 +71,30 @@ p_change_truth = csvread("parameters.csv", 0, 1, [0,1,0,1]);
 
 for i = 1:168
     % Get bid from policy 
-    [X1,theta1,p1,bid1] = KG_hr1(X1,theta1,p1, 0); 
-    [X2,theta2,p2,bid2] = KG_hr2(X2,theta2,p2, 0);
-    [X3,theta3,p3,bid3] = KG_hr(X3,theta3,p3, 0); 
+    [X1,theta1,p1,bid1] = KG_ms(X1,theta1,p1, 0,10); 
+    [X2,theta2,p2,bid2] = KG_ms(X2,theta2,p2, 0,10);
+    [X3,theta3,p3,bid3] = KG_ms(X3,theta3,p3, 0,10); 
     
     %[testrs,testbid] = bid(testrs,a); 
     sampleAuctions = simAuctions(auctions(i)); 
     
- 
+    clicks1 = 0; 
+    clicks2 = 0; 
+    clicks3 = 0; 
+    
     for j = 1:sampleAuctions 
-        if bid1 < bid2 && bid1 < bid3:
+        if bid1 < bid2 && bid1 < bid3
             disp('bid1 won')
             clicks1 = Clicks(truth_theta1_1,truth_theta1_2,bid1);
             totalClicks1 = totalClicks1 + clicks1;
         end 
-        if bid2 < bid1 && bid2 < bid3: 
+        if bid2 < bid1 && bid2 < bid3
             disp('bid2 won')
             clicks2 = Clicks(truth_theta2_1,truth_theta2_2,bid1);
             totalClicks2 = totalClicks2 + clicks2;
             
         end 
-        if bid3 < bid1 && bid3 < bid2:
+        if bid3 < bid1 && bid3 < bid2
             disp('bid3 won')
             clicks3 = Clicks(truth_theta3_1,truth_theta3_2,bid1);
             totalClicks3 = totalClicks3 + clicks3;
@@ -126,8 +125,10 @@ for i = 1:168
 
     profit = 20*clicks1 - clicks1*bid1;
     % Update learning policy
-    [X1,theta1,p1] = learner_KG_hr(X1,theta1,p1,bid1,sampleAuctions,totalClicks);
-    testrs = learn(testrs); 
+    [X1,theta1,p1] = learner_KG_hr(X1,theta1,p1,bid1,sampleAuctions,clicks1);
+    [X2,theta2,p2] = learner_KG_hr(X2,theta2,p2,bid2,sampleAuctions,clicks2);
+    [X3,theta3,p3] = learner_KG_hr(X3,theta3,p3,bid3,sampleAuctions,clicks3);
+%     testrs = learn(testrs); 
     % Randomize truth so that it's dynamic
 %     if rand >= p_change_truth
 %         
