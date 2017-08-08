@@ -1,8 +1,6 @@
 function [auctions] = data_preprocessor()
 
-global data; 
-global ad_group_id; 
-global column_No; 
+data = csvread('ParsedParam.csv',1,0);
 
 auctions = zeros([168 1]); 
 for x = 1:168
