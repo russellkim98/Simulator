@@ -6,7 +6,7 @@ addpath(genpath('~/AuctionProject'));
 
 % Clean up data and get the average number of auctions and the probability of a click in an hour 
 [auctions,pAuction_Click] = data_preprocessor(); 
-pAuction_Click = pAuction_Click/3; 
+
 
 % Get location adjustment values
 location_Constant = location_preprocessor(53,21,97); 
@@ -44,7 +44,7 @@ for i = 1:168
     auctionHour = simAuctions(auctions(i)); 
  
     % Create a vector for the bids and the clicks 
-    bids = [bid1 bid2 bid3]; 
+    bids = [bid1 bid2 bid3(1)]; 
     clicks = zeros(1,3); 
     
     % For every auction, get the winning bid and get the number of clicks
@@ -62,7 +62,7 @@ for i = 1:168
      % Update learning policy
     [thetas1,p1] = learn_KG(bids(1),thetas1,p1,auctionHour,clicks(1));
     [thetas2,p2] = learn_KG(bids(2),thetas2,p2,auctionHour,clicks(2));
-    [w_est,q_est] = learn_KG(bids(3),w_est,q_est,auctionHour,clicks(3));
+    [w_est,q_est] = learn_logKG(bid3,w_est,q_est,auctionHour,clicks(3));
     
     
 end
