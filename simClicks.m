@@ -1,5 +1,8 @@
-function[simulatedClicks] = simClicks(theta0,theta1,bid)
-    % input into logistic equation 
-    pWC = 1/(1 + exp(-theta0 - theta1 * bid));
+function[simulatedClicks] = simClicks(theta1,theta2,bid)
+    % input into logistic equation
+    theta1
+    theta2
+    bid
+    pWC = 1/(1 + exp(- theta1 - theta2*bid));
     simulatedClicks = binornd(1,pWC);
 end 

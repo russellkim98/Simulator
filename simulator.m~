@@ -6,7 +6,6 @@ addpath(genpath('~/AuctionProject'));
 
 % Clean up data and get the average number of auctions and the probability of a click in an hour 
 [auctions,pAuction_Click] = data_preprocessor(); 
-pAuction_Click = pAuction_Click/3; 
 
 % Get location adjustment values
 location_Constant = location_preprocessor(53,21,97); 
