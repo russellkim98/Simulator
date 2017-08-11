@@ -20,7 +20,7 @@ Have a file called "ParsedParam.csv" with data with correct columns like this:
 ### Dependencies ###
 * Make sure your computer is capable of running several parallel processes, otherwise the code will take hours to run if doing more than one run
 ### Database configuration ###
-* N/a
+* Edit indicated values as needed 
 ### How to run tests ###
 * Run simulator.m
 ### Deployment instructions ###
